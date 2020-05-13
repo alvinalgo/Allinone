@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!--if else in html; {{title}}: can be substituted by title-->
+	{% if title %}
+	  <title>來來來 {{ title }}</title>
+	{% else %}
+	  <title>Flask Blog</title>
+	{% endif %}
+</head>
+<body>
+	<h1>{{ colinfo.descript }}</h1>
+	<h2>Cover image:</h2>
+	<p>Route of cover_img : {{ colinfo.cover_img }}</p>
+	<img src="{{ colinfo.cover_img }}" alt="cover image" width="240" height="300" style="display:block; margin:auto;">
+	<p>tags : {{ colinfo.tags }}</p>
+
+	<h2>內頁的圖們:</h2>
+	{% for i in colinfo.imgs %}
+		<p>路徑:{{ i }}</p>
+		<img src="{{ i }}" alt="inner image" style="display:block; margin:auto;">
+	{% endfor %}
+	{# 我是註解 #}
+</body>
+</html>
