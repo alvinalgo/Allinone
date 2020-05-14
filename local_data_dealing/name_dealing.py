@@ -1,7 +1,7 @@
 import os
 import sys
 import shutil
-#---------------------------------------------------------------判斷用 OK
+# ---------------------------------------------------------------判斷用 OK
 def hello():
 	print('Hey guys')
 
@@ -11,25 +11,29 @@ def exist_japanese(st):  #判斷字串裏頭有沒有日文
 			return True
 	else:
 		return False
+
 def exist_chinese(st):   #判斷字串裏頭有沒有中文
 	for i in range(len(st)):
 		if u'\u4e00' <= st[i] <=u'\u9fff':
 			return True
 	else:
 		return False
+
 def judgeing_video(fn): #判斷檔案是否為影片
 	# video_subtitle = ('.mp4','.avi','.3gp','.wmv','.mod','.mpg','.mpeg','.mov','.rm','.rmvb','.MP4')
 	for i in video_subtitle:
 		if os.path.splitext(fn)[-1] == i :
 			return(1)
 	return(0)
+
 def judgeing_pic(fn): #判斷檔案是否為圖片
 	picture_subtitle = ('.jpg','.png','.gif','.jpeg','.bmp')
 	for i in picture_subtitle:
 		if os.path.splitext(fn)[-1] == i :			
 			return(1)
 	return(0)
-#--------------------------------------------------------------- OK
+
+# --------------------------------------------------------------- OK
 def deal_with_subnames(somedir,subnames,dest): #處理副檔名，通用 OK
 	if not os.path.isdir(somedir+'\\'+dest):
 		os.mkdir(somedir+'\\'+dest)
@@ -45,6 +49,7 @@ def deal_with_subnames(somedir,subnames,dest): #處理副檔名，通用 OK
 				# shutil.move(f,somedir+'\\rars') 
 			# else:#它存在
 				# os.remove(f) #刪掉原檔案
+
 def deal_with_keyword(somedir,keyword,dest): #處理關鍵字，通用 OK
 	if not os.path.isdir(somedir+'\\'+dest):
 		os.mkdir(somedir+'\\'+dest)
@@ -56,6 +61,7 @@ def deal_with_keyword(somedir,keyword,dest): #處理關鍵字，通用 OK
 				shutil.move(f,somedir+'\\'+dest)
 			except :
 				print('移動失敗檔案:'+ f)
+
 def deal_with_numofnames(somedir,num,dest): #處理檔名長度，通用OK
 	if not os.path.isdir(somedir+'\\'+dest):
 		os.mkdir(somedir+'\\'+dest)
@@ -67,6 +73,7 @@ def deal_with_numofnames(somedir,num,dest): #處理檔名長度，通用OK
 				shutil.move(f,somedir+'\\'+dest)
 			except :
 				print('移動失敗檔案:'+ f)
+
 def deal_with_japanese(somedir): #只對第一層 移動檔案
 	if not os.path.isdir(somedir+'\\FromJAP'):
 		os.mkdir(somedir+'\\FromJAP')
@@ -78,6 +85,7 @@ def deal_with_japanese(somedir): #只對第一層 移動檔案
 			except:#它存在
 				print('移動失敗檔案:'+ f)
 				# os.remove(f) #刪掉原檔案  #這裡刪不掉 好像是資料夾刪不掉 應該OK
+
 def deal_with_chinese(somedir): #只對第一層 移動檔案
 	if not os.path.isdir(somedir+'\\有中文檔名'):
 		os.mkdir(somedir+'\\有中文檔名')
@@ -88,6 +96,7 @@ def deal_with_chinese(somedir): #只對第一層 移動檔案
 				shutil.move(f,somedir+'\\有中文檔名') 
 			except: #它存在
 				print('移動失敗檔案:'+ f)
+
 #-------------------------------------------------------------------------------------------- OK
 def folder_count(somedir): #return總共data數,圖片數,影片數
 	data_count = 0
@@ -108,6 +117,7 @@ def del_empty_folder(somedir): #目前只刪除第一層空資料夾
 	for f in filelist:
 		if folder_count(os.path.join(somedir,f))[0] == 0 and os.path.isdir(os.path.join(somedir,f)):
 			shutil.rmtree(os.path.join(somedir,f))
+
 #-------------------------------------------------------------------------------------------- 
 '''
 def is_vango():
@@ -171,5 +181,3 @@ if __name__ == "__main__":
 
 	# 先把番號fit一個固定格式 ex:KTDS-931
     # 把番號、演遠、片名存成一個dictionary
-	
-
