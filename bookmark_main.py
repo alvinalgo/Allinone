@@ -11,8 +11,8 @@ def home(): #直接拿base裡的資料，看之後要不要做隨機
         covinfo.append(coll["cover_img"])    
     return render_template('bookmark_home.html', covinfo=covinfo, title='This is home')
 
-@app.route('/<cname>')
-def pg2(cname):
+@app.route('/subpage/<cname>')
+def subpage(cname):
     info = mybookmarkinfo[cname]
     return render_template('bookmamrk_page2.html', colinfo=do.findinfo(root_pth,r), title='子網頁')
     #colinfo 是個dictionary
@@ -23,23 +23,25 @@ def pg2(cname):
     # recommendation system推薦類似的
 
 if __name__ == "__main__":    # 處理書籤的時候:
-    mybookmarkinfo = json.loads(檔案路徑) #load自己的dictionary
-    googlebookmarkinfo = loads(input_file.read()) #load chrome那邊
-
-# TODO: pseudo-code
-#     for 每個書籤: #開啟時先遍歷書籤
-#         if 沒封面(書籤網址不在key裡面):
-#         每個書籤load 封面，檔名再想想，都存到同一個資料夾好了 C槽or和mybookmarkinfo同個地方
-#         路徑存在另一個dictionary - mybookmarkinfo:
-#             key: 書籤網址
-#             value: 也是dictionary: ex:
-#                 {'thumbroute':'C:\\example.png','tags':['學業用','休閒用'],'similar one':['http:eyny','https:keep.com']}
-        
+    # mybookmarkinfo = json.loads(檔案路徑) #load已有的database
+    googlebookmarkinfo = load_bookmarks(XDD) #load chrome 那邊, 會是一個dataframe
     app.run(debug=True)
-'''
-    註:現在有的東西:
-    1.load書籤得到的dictionary
-    2.mybookmarkinfo
-'''
 
+    ## load thumb_imgs
+    for idx,xxx in enumerate(googlebookmarkinfo): # 開啟時先遍歷書籤
+        if 沒封面: #和已有的database比對，之後再做
+            # 每個書籤load封面，檔名可用 id or guid，都存到同一個資料夾            
+            route = download_thumb_img(googlebookmarkinfo['url'][idx]) # ex: 'C:/example.png'
+            thumb_routes.append(route)
+    googlebookmarkinfo['thumb_img_route'] = thumb_routes # list of route後再append進去data_frame
+    
+    
+
+to-do:
+web_page
+1. UI
+
+bookmark_dealing
+1.download_thumb_img()
+2.recommendation system to get similar one
 
