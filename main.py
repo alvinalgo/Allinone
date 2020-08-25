@@ -1,6 +1,8 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 import os
 import dometa as do
+
+import pandas as pd
 
 class CustomFlask(Flask):
     jinja_options = Flask.jinja_options.copy()
@@ -11,15 +13,13 @@ class CustomFlask(Flask):
 
 app = CustomFlask(__name__)  # This replaces your existing "app = Flask(__name__)"
 app.config['folder'] = 'static'
+app.config['debug'] = True
 # app.config['folder'] = '/'
 
 # 網頁們 ------------------------------------------------------
 @app.route('/')
 def home():    # 再來要把圖片做超連結
-
-    thumbnails = {topic: topics[topic]['thumbnail'] for topic in topics}
-    # return render_template('home.html', thumbnails=thumbnails, title='This is home')
-    return render_template('index.html', thumbnails=thumbnails, title='This is home')
+    return render_template('index.html', title='This is home')
 
 @app.route('/test')
 def test():
@@ -43,17 +43,20 @@ def test():
 def subpage(cname):
     # r = 'static\\Collections\\FBIMG'
     r = os.path.join(app.config['folder'], 'Collections', cname)
-    return render_template('page2.html', colinfo=do.findinfo(root_path,r), title='子網頁')    # colinfo 是個 dictionary
+    return render_template('page2.html', colinfo=do.findinfo(root_path, r), title='子網頁')    # colinfo 是個 dictionary
 
 @app.route('/metadata')
 def metadata():
-    return topics
+    print(jsonify({'list': bookmarks[:9]}))
+    return  jsonify({'list': bookmarks[:9]})
 
 # main -----------------------------------------------------
 if __name__ == "__main__":
-    root_path = os.getcwd()
-    rel_lib_path = os.path.join('static', 'Collections')    # path of 'Collections' in the relative format
-
-    do.make_metadata(root_path, rel_lib_path)
-    topics = do.read_metadata(root_path)
+    
+    df = pd.read_hdf('metadata.h5')
+    bookmarks = df[['name', 'url', 'img_url']].to_dict('records')
+#     print(bookmarks)
+    
+#     do.make_metadata(root_path, rel_lib_path)
+#     topics = do.read_metadata(root_path)
     app.run(debug=True)

@@ -34,7 +34,7 @@ def make_metadata(root_path, rel_lib_path):
     topic_path = os.path.join(root_path, rel_lib_path)
     folderlist = next(os.walk(topic_path))[1]
     print(topic_path, folderlist)
-    topics = {folder: get_metadata_from_path(root_path, os.path.join(rel_lib_path,folder))
+    topics = {folder: get_metadata_from_path(root_path, os.path.join(rel_lib_path, folder))
                     for folder in folderlist}
     with open('metadata.json', 'w', encoding='utf8') as f:
         json.dump(topics, f)
