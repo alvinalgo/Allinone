@@ -1,20 +1,26 @@
-from flask import Flask, render_template, jsonify
 import os
-import dometa as do
+import re
+import random
 
 import pandas as pd
+
+from flask import Flask, render_template, jsonify
+from flask_cors import cross_origin
+
+# import dometa as do
 
 class CustomFlask(Flask):
     jinja_options = Flask.jinja_options.copy()
     jinja_options.update(dict(
-        variable_start_string='%%',  # Default is '{{', I'm changing this because Vue.js uses '{{' / '}}'
+        variable_start_string='%%',    # Default is '{{', I'm changing this because Vue.js uses '{{' / '}}'
         variable_end_string='%%',
     ))
 
-app = CustomFlask(__name__)  # This replaces your existing "app = Flask(__name__)"
+app = CustomFlask(__name__, static_url_path='')    # This replaces your existing "app = Flask(__name__)"
+# app.config['folder'] = '/'
 app.config['folder'] = 'static'
 app.config['debug'] = True
-# app.config['folder'] = '/'
+
 
 # 網頁們 ------------------------------------------------------
 @app.route('/')
@@ -24,18 +30,18 @@ def home():    # 再來要把圖片做超連結
 @app.route('/test')
 def test():
     testdict = [
-	{
-		'author': 'Lynn',
-		'title': 'Blog Post 1',
-		'content': 'First post content',
-		'date_posted': 'September 3, 2018'
-	},
-	{
+    {
+        'author': 'Lynn',
+        'title': 'Blog Post 1',
+        'content': 'First post content',
+        'date_posted': 'September 3, 2018'
+    },
+    {
         'author': 'Lydia',
         'title': 'Blog Post 2',
         'content': 'Second post content',
         'date_posted': 'September 6, 2018'
-	}
+    }
     ]
     return render_template('test.html', posts=testdict, title='For test')
 
@@ -46,16 +52,21 @@ def subpage(cname):
     return render_template('page2.html', colinfo=do.findinfo(root_path, r), title='子網頁')    # colinfo 是個 dictionary
 
 @app.route('/metadata')
+@cross_origin()
 def metadata():
-    print(jsonify({'list': bookmarks[:9]}))
-    return  jsonify({'list': bookmarks[:9]})
+    img_list = os.listdir('static/images')
+    img_list = [img for img in img_list if not re.match('^\..*', img)]
+    sample = random.sample(img_list, min(len(img_list), 18))
+    result = [f'http://127.0.0.1:5000/images/{s}' for s in sample]
+    
+    return  jsonify(result)#{'list': bookmarks[:9]})
 
 # main -----------------------------------------------------
 if __name__ == "__main__":
     
     df = pd.read_hdf('metadata.h5')
     bookmarks = df[['name', 'url', 'img_url']].to_dict('records')
-#     print(bookmarks)
+    # print(bookmarks[:9])
     
 #     do.make_metadata(root_path, rel_lib_path)
 #     topics = do.read_metadata(root_path)
