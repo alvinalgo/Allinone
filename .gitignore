@@ -1,4 +1,4 @@
-static/
+static/images
 frontend/node_modules
 frontend/dist
 metadata.h5
