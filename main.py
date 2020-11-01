@@ -1,13 +1,12 @@
 import os
 import re
 import random
+import pickle
 
 import pandas as pd
 
 from flask import Flask, render_template, jsonify
 from flask_cors import cross_origin
-
-# import dometa as do
 
 class CustomFlask(Flask):
     jinja_options = Flask.jinja_options.copy()
@@ -17,56 +16,53 @@ class CustomFlask(Flask):
     ))
 
 app = CustomFlask(__name__, static_url_path='')    # This replaces your existing "app = Flask(__name__)"
-# app.config['folder'] = '/'
-app.config['folder'] = 'static'
 app.config['debug'] = True
 
 
 # 網頁們 ------------------------------------------------------
 @app.route('/')
-def home():    # 再來要把圖片做超連結
-    return render_template('index.html', title='This is home')
+def home():
+    return render_template('index.html', title='All in One')
 
-@app.route('/test')
-def test():
-    testdict = [
-    {
-        'author': 'Lynn',
-        'title': 'Blog Post 1',
-        'content': 'First post content',
-        'date_posted': 'September 3, 2018'
-    },
-    {
-        'author': 'Lydia',
-        'title': 'Blog Post 2',
-        'content': 'Second post content',
-        'date_posted': 'September 6, 2018'
-    }
-    ]
-    return render_template('test.html', posts=testdict, title='For test')
-
-@app.route('/subpage/<cname>')
-def subpage(cname):
-    # r = 'static\\Collections\\FBIMG'
-    r = os.path.join(app.config['folder'], 'Collections', cname)
-    return render_template('page2.html', colinfo=do.findinfo(root_path, r), title='子網頁')    # colinfo 是個 dictionary
-
-@app.route('/metadata')
+@app.route('/randoms')
 @cross_origin()
-def metadata():
-    
+def randoms():
     sample = random.sample(bookmarks, min(len(bookmarks), 18))
-    
     return  jsonify(sample)
+
+@app.route('/folders')
+@cross_origin()
+def folders():
+    result = df[df['type'] == 'folder'].to_dict('records')
+    return  jsonify(result)
+
+@app.route('/full_list')
+@cross_origin()
+def full_list():
+    result = df.sort_values(['type', 'date_added'], ascending=[True, False]).to_dict('records')
+    return  jsonify(result)
+
+@app.route('/explorer')
+@cross_origin()
+def explorer():
+    
+    target_index = ''
+    
+    if target_index == '':
+        result = df_id.loc[['1', '2', '3']].to_dict('records')
+        return jsonify(result)
+    else:
+        result = df_id.loc[target_index].to_dict('records')
+        return jsonify(result)
+
 
 # main -----------------------------------------------------
 if __name__ == "__main__":
     
     df = pd.read_hdf('metadata.h5')
+    df_id = df.set_index('id')
+        
     indicator = df['img_url'].apply(bool)
-    bookmarks = df.loc[indicator, ['name', 'url', 'guid']].to_dict('records')
-    # print(bookmarks[:9])
-    
-#     do.make_metadata(root_path, rel_lib_path)
-#     topics = do.read_metadata(root_path)
+    bookmarks = df.loc[indicator].to_dict('records')    #, ['name', 'url', 'guid']].to_dict('records')
+
     app.run(debug=True)
