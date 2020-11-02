@@ -42,19 +42,25 @@ def full_list():
     result = df.sort_values(['type', 'date_added'], ascending=[True, False]).to_dict('records')
     return  jsonify(result)
 
-@app.route('/explorer')
+@app.route('/explorer_query/<target_index>')
 @cross_origin()
-def explorer():
+def explorer_query(target_index):
     
-    target_index = ''
-    
-    if target_index == '':
-        result = df_id.loc[['1', '2', '3']].to_dict('records')
-        return jsonify(result)
+    if target_index == '-1':    # home
+        target_list = ['1', '2', '3']
     else:
-        result = df_id.loc[target_index].to_dict('records')
-        return jsonify(result)
+        target = df_id.loc[target_index]
+        target_list = target['children_folders'] + target['children_urls']
+   
+    result = df_id.loc[target_list].reset_index().to_dict('records')
+    return jsonify(result)
 
+@app.route('/get_parents_and_self/<target_index>')
+@cross_origin()
+def get_parents_and_self(target_index):
+    target_list = df_id.loc[target_index]['parents']
+    result = df_id.loc[target_list].reset_index().to_dict('records')
+    return jsonify(result)
 
 # main -----------------------------------------------------
 if __name__ == "__main__":

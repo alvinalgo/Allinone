@@ -4,7 +4,7 @@
       :class="get_class(i)"
       @mouseenter="focusing=i" @mouseleave="focusing=-1">
 
-      <Card :width="200" :height="250" :image="image" :focusing="i === focusing"/>
+      <Card :width="200" :height="250" :datum="image" :focusing="i === focusing"/>
     </div>
   </div>
 </template>
@@ -13,7 +13,7 @@
 import Card from "./event_card"
 
 export default {
-  name: "app",
+  name: "grid-display",
   components: {
     Card
   },

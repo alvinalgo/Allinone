@@ -11,7 +11,7 @@
       >
         <div :class="i === focusing ? 'focus' : 'non-focus'"
           @mouseenter="focusing=i" @mouseleave="focusing=-1">
-          <Card :width="250" :height="250" :image="image" :focusing="i === focusing"/>
+          <Card :width="250" :height="250" :datum="image" :focusing="i === focusing"/>
         </div>
       </stack-item>
     </stack>

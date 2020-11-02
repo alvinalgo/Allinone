@@ -1,6 +1,6 @@
 <template>
   <div class="event-card" :style="wrapper_style">
-    <Card :style="card_style" :image="modify_image" :focusing="focusing"/>
+    <Card :style="card_style" :datum="modify_image_url" :focusing="focusing"/>
   </div>
 </template>
 
@@ -8,7 +8,7 @@
 import Card from "./basic_card"
 
 export default {
-  props: ['image', 'focusing', 'width', 'height'],
+  props: ['datum', 'focusing', 'width', 'height'],
   components: {
     Card
   },
@@ -26,12 +26,12 @@ export default {
     }
   },
   computed: {
-    modify_image () {
-      var new_image = this.image
-      if (new_image.type == 'folder'){new_image.img_url = 'http://127.0.0.1:5000/icon/folder.jpg'}
-      else {new_image.img_url =  `http://127.0.0.1:5000/images/${new_image.guid}`}
+    modify_image_url () {
+      var new_datum = this.datum
+      if (new_datum.type == 'folder'){new_datum.img_url = 'http://127.0.0.1:5000/icon/folder.jpg'}
+      else {new_datum.img_url =  `http://127.0.0.1:5000/images/${new_datum.guid}`}
       
-      return new_image
+      return new_datum
     }
   }
 }

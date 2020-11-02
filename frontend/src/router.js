@@ -22,14 +22,21 @@ const routes = [
     name: "full_list",
     props: true,
     component: () =>
-      import(/* webpackChunkName: "explorer" */ "@/views/Full_List.vue")
+      import(/* webpackChunkName: "full_list" */ "@/views/Full_List.vue")
   },
   {
-    path: "/explorer/:start_index",
+    path: "/explorer/:target_index/:start_index",
     name: "explorer",
     props: true,
     component: () =>
       import(/* webpackChunkName: "explorer" */ "@/views/Explorer.vue")
+  },
+  {
+    path: "/tag/:tag",
+    name: "tag",
+    props: true,
+    component: () =>
+      import(/* webpackChunkName: "tag" */ "@/views/Tag.vue")
   },
 ]
 
