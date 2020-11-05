@@ -1,42 +1,42 @@
 import Vue from "vue"
 import VueRouter from "vue-router"
-import Randoms from "@/views/Randoms.vue"
 
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/",
-    name: "home",
-    component: Randoms
+    path: "/:start_index?",
+    name: "Home",
+    component: () =>
+    import(/* webpackChunkName: "Home" */ "@/views/Home.vue")
   },
   {
-    path: "/folders",
-    name: "folders",
+    path: "/folders/:folder_id/:start_index?",
+    name: "Folders",
     props: true,
     component: () =>
       import(/* webpackChunkName: "folders" */ "@/views/Folders.vue")
   },
   {
-    path: "/full_list/:start_index",
-    name: "full_list",
+    path: "/full_list/:start_index?",
+    name: "Full List",
     props: true,
     component: () =>
       import(/* webpackChunkName: "full_list" */ "@/views/Full_List.vue")
   },
   {
-    path: "/explorer/:target_index/:start_index",
-    name: "explorer",
+    path: "/explorer/:target_index/:start_index?",
+    name: "Explorer",
     props: true,
     component: () =>
       import(/* webpackChunkName: "explorer" */ "@/views/Explorer.vue")
   },
   {
-    path: "/tag/:tag",
-    name: "tag",
+    path: "/tags/:tag?",
+    name: "Tags",
     props: true,
     component: () =>
-      import(/* webpackChunkName: "tag" */ "@/views/Tag.vue")
+      import(/* webpackChunkName: "tag" */ "@/views/Tags.vue")
   },
 ]
 

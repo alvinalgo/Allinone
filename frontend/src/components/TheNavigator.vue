@@ -1,62 +1,75 @@
 <template>
-<nav>
-<!--       <md-app-drawer :md-active.sync="panel" >
-          <md-toolbar class="md-transparent" md-elevation="2">
-            Navigation
-          </md-toolbar> 
-          <md-list> 
-                <md-list-item> 
-                <md-icon>aa</md-icon> 
-                <span class="md-list-item-text"><router-link to="/">Home</router-link></span> 
-                </md-list-item> 
-                <md-list-item> 
-                <md-icon>aaa</md-icon> 
-            <span class="md-list-item-text"><router-link to="/">Home</router-link></span> 
-          </md-list-item>
-        </md-list>
-      </md-app-drawer> -->
-      
-  <ul>
-    <li><router-link :to="{name:'home'}">Home</router-link></li>
-    <li><router-link :to="{name:'folders'}">Folders</router-link></li>
-    <li><router-link :to="{name:'full_list', params:{'start_index': 0}}">Full List</router-link></li>
-    <li><router-link :to="{name:'explorer', params:{
-      'start_index': 0, 
-      'target_index': this.$store.state.folder_stack.length ?
-        this.$store.state.folder_stack.slice(-1)[0]['id'] : '-1'}
-      }">Explorer</router-link></li>
-  </ul>
-</nav>
+<div>
+  <nav>
+  <!--       <md-app-drawer :md-active.sync="panel" >
+            <md-toolbar class="md-transparent" md-elevation="2">
+              Navigation
+            </md-toolbar> 
+            <md-list> 
+                  <md-list-item> 
+                  <md-icon>aa</md-icon> 
+                  <span class="md-list-item-text"><router-link to="/">Home</router-link></span> 
+                  </md-list-item> 
+                  <md-list-item> 
+                  <md-icon>aaa</md-icon> 
+              <span class="md-list-item-text"><router-link to="/">Home</router-link></span> 
+            </md-list-item>
+          </md-list>
+        </md-app-drawer> -->
+    
+    <ul>
+      <li><router-link :to="{name:'Home'}">Home</router-link></li>
+      <li><router-link :to="{name:'Folders', params:{folder_id: '-1'}}">Folders</router-link></li>
+      <!-- <li><router-link :to="{name:'Full List', params:{'start_index': 0}}">Full List</router-link></li> -->
+      <li><router-link :to="{name:'Tags', params:{tag:'-1'}}">Tags</router-link></li>
+      <!-- <li><router-link :to="{name:'Folders', params:{folder_id:'1891'}}">iinumbers</router-link></li> -->
+      <li><router-link :to="{name:'Explorer', params: explorer_params}">Explorer</router-link></li>
+    </ul>
+  </nav>
+</div>
 </template>
 
 <script>
 export default {
-    name: 'TheNavigator'
+  name: 'TheNavigator',
+  computed: {
+    explorer_params () {
+      var target_index = this.$store.state.folder_stack.length ? this.$store.state.folder_stack.slice(-1)[0]['id'] : '-1'
+      return {'start_index': 0, 'target_index': target_index}
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 nav {
-  display: flex;
-  justify-content: center;
   
   ul {
+    display: flex;
+    justify-content: space-between;
     padding: 0px;
     text-align: center;
       
     li {
       list-style: none;
-      padding: 10px 0px;
+      padding: 0px 30px;
     }
   }
     
   a {
-    text-decoration: none;
-    font-weight: bold;
-    color: #2c3e50;
+    &:link, &:visited, &:hover, &:active {
+      color: #ffffff;
+      transition: none;
+    }
+
+    &.router-link-active {
+      // font-weight: bold;
+      // color: #ffffff;
+    }
 
     &.router-link-exact-active {
-      color: #42b983;
+      // font-weight: bold;
+      // color: #0062d1;
     }
   }
 }

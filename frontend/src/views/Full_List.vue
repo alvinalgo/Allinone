@@ -1,32 +1,20 @@
 <template>
-  <div class="view-wrapper">
+  <div>
     <h1>Full List</h1>
-    <PagingSystem :bookmarks="this.$store.state.bookmark_bar"/>
+    <DisplaySystem :bookmarks="this.$store.state.sorted_all_bookmarks"/>
   </div>
 </template>
 
 <script>
-import PagingSystem from "../components/paging_system"
+import DisplaySystem from "@/components/display_system/index"
 
 export default {
   name: "folders",
   components: {
-    PagingSystem
-  },
-  data () {
-    return {
-      bookmarks: []
-    }
+    DisplaySystem
   },
   mounted () {
     this.$store.dispatch("check_full_list")
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.view-wrapper {
-  width: 90%;
-  margin: 0 auto;
-}
-</style>

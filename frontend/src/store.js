@@ -11,17 +11,22 @@ export default new Vuex.Store({
       folders: false,
       full_list: false
     },
+    display: {
+      display_style: 'fountain_display',
+      sorting: 'recents'
+    },
     folders: [],
-    bookmark_bar: [],
-    folder_stack: []
+    sorted_all_bookmarks: [],
+    folder_stack: [],
   },
   mutations: {
     update_folder(state, payload) {
       state.folders = payload
     },
     update_full_list(state, payload) {
-      state.bookmark_bar = payload
+      state.sorted_all_bookmarks = payload
     },
+
     stack_the_folder(state, payload) {
       state.folder_stack.push(payload)
     },
@@ -30,8 +35,14 @@ export default new Vuex.Store({
     },
     refresh_folder_stack(state, payload) {
       state.folder_stack = payload
-    }
+    },
 
+    update_display(state, payload) {
+      state.display['display_style'] = payload
+    },
+    update_sorting(state, payload) {
+      state.display['sorting'] = payload
+    }
   },
   actions: {
     check_folders({commit}) {
@@ -52,6 +63,7 @@ export default new Vuex.Store({
         this.state.loaded.full_list = true    // 待改，要用 mutation
       }
     },
+
     stack_the_folder({commit}, payload) {
       commit('stack_the_folder', payload)
     }, 
@@ -65,11 +77,17 @@ export default new Vuex.Store({
       else {
         axios.get('http://127.0.0.1:5000/get_parents_and_self/'+payload)
             .then(response => {
-              console.log(response.data)
               commit('refresh_folder_stack', response.data)
           })
       }
-    }
+    },
+
+    update_display({commit}, payload) {
+      commit('update_display', payload)
+    },
+    update_sorting({commit}, payload) {
+      commit('update_sorting', payload)
+    },
   },
   modules: {}
 })

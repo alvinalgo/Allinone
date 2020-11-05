@@ -1,22 +1,20 @@
 <template>
   <div class="view-wrapper">
-    <h1>Tag</h1>
     {{this.$route.params.tag}}
-    <Display :images="this.$store.state.folders"/>
+    <DisplaySystem :bookmarks="this.$store.state.folders"/>
   </div>
 </template>
 
 <script>
-import store from "@/store"
-import Display from "../components/fountain_display"
+import DisplaySystem from "@/components/display_system/index"
 
 export default {
   name: "folders",
   components: {
-    Display
+    DisplaySystem
   },
   mounted() {
-    store.dispatch('check_folders')
+    this.$store.dispatch('check_folders')
   }
 }
 </script>

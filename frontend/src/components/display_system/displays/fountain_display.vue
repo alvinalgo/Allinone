@@ -7,11 +7,11 @@
       monitor-images-loaded
     >
       <stack-item
-        v-for="(image, i) in images" :key="i"
+        v-for="(card_info, i) in card_list" :key="i"
       >
         <div :class="i === focusing ? 'focus' : 'non-focus'"
           @mouseenter="focusing=i" @mouseleave="focusing=-1">
-          <Card :width="250" :height="250" :datum="image" :focusing="i === focusing"/>
+          <Card :width="250" :height="250" :card_info="card_info" :focusing="i === focusing" :click_card_head="click_card_head"/>
         </div>
       </stack-item>
     </stack>
@@ -20,7 +20,9 @@
 
 <script>
 import { Stack, StackItem } from "vue-stack-grid";
-import Card from "./event_card"
+import base from "./display_mixin.js"
+import Card from "../cards/event_card"
+
 
 export default {
   name: "app",
@@ -29,10 +31,7 @@ export default {
     StackItem,
     Card
   },
-  data: () => ({
-    focusing: -1
-  }),
-  props: ['images'],
+  mixins: [base],
   computed: {
     is_focus (i) {
       return i === this.focusing ? "focus" : ""

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex-wrapper">
-      <h2>{{ folder_name }}</h2>
+      <h2>{{ name }}</h2>
       <PerformingOptions/>
     </div>
     <DisplaySystem :card_list="card_list" :click_card_head="click_card_head"/>
@@ -12,7 +12,6 @@
 import axios from "axios"
 import DisplaySystem from "@/components/display_system/index"
 import PerformingOptions from "@/components/display_system/performing_options"
-import non_explorer_base from "@/views/common_non_explorer_bookmarks_mixin"
 
 export default {
   name: "folders",
@@ -20,26 +19,35 @@ export default {
     DisplaySystem,
     PerformingOptions
   },
-  mixins: [non_explorer_base],
   data () {
     return {
       card_list: [],
-      folder_name: ''
+      name: ''
     }
   },
   mounted() {
-    if (this.$route.params.folder_id === '-1') {
-      axios.get('http://127.0.0.1:5000/folders')
+    if (this.$route.params.tag === '-1') {
+      axios.get('http://127.0.0.1:5000/tags')
         .then(response => {
-          this.folder_name = 'All folders'
+          this.name = 'All tags'
           this.card_list = response.data
       })
     } else {
-      axios.get(`http://127.0.0.1:5000/query_a_folder/${this.$route.params.folder_id}`)
+      axios.get(`http://127.0.0.1:5000/query_a_tag/word_tokenized/${this.$route.params.tag}`)
         .then(response => {
-          this.folder_name = response.data['name']
+          this.name = response.data['name']
           this.card_list = response.data['children']
       })
+    }
+  },
+  methods: {
+    click_card_head (bookmarks) {
+      if(bookmarks['type'] == 'folder') {
+        this.$router.push({name: 'Folders', params:{folder_id: bookmarks['id'], start_index: '0'}})
+      }
+      else {
+        window.open(bookmarks['url'], "_blank")
+      }
     }
   }
 }
