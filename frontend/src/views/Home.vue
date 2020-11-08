@@ -1,27 +1,31 @@
 <template>
-  <div>
-    <div class="flex-wrapper">  
+  <ViewTemplate>
+    <template #control-panel>  
       <md-button class="md-dense md-primary" @click="fetch">Refetch</md-button>
       <PerformingOptions/>
-    </div>
-
-    <DisplaySystem :card_list="bookmarks" :click_card_head="click_card_head"/>
-  </div>
+    </template>
+    <template #result-display>
+      <DisplaySystem :card_list="bookmarks" :click_card_head="clickCardHead"/>
+    </template>
+  </ViewTemplate>
 </template>
 
 <script>
 import axios from "axios";
 import DisplaySystem from "@/components/display_system/index"
 import PerformingOptions from "@/components/display_system/performing_options"
-import non_explorer_base from "@/views/common_non_explorer_bookmarks_mixin"
+import NonExplorerBase from "@/views/common_non_explorer_bookmarks_mixin"
+import ViewTemplate from "@/components/TheViewTemplate"
+
 
 export default {
   name: "randoms",
   components: {
+    ViewTemplate,
     DisplaySystem,
     PerformingOptions
   },
-  mixins: [non_explorer_base],
+  mixins: [NonExplorerBase],
   data () {
     return {
       bookmarks: []

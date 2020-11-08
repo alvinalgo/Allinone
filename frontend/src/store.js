@@ -12,8 +12,9 @@ export default new Vuex.Store({
       full_list: false
     },
     display: {
-      display_style: 'fountain_display',
-      sorting: 'recents'
+      display_style: 'grid_display',
+      sorting: 'recents',
+      displayingSize: 30
     },
     folders: [],
     sorted_all_bookmarks: [],

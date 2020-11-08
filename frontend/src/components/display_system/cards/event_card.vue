@@ -29,6 +29,7 @@ export default {
     modify_image_url () {
       var new_card_info = this.card_info
       if (new_card_info.type == 'folder'){new_card_info.img_url = 'http://127.0.0.1:5000/icon/folder.jpg'}
+      else if (new_card_info.type == 'tag'){new_card_info.img_url = 'http://127.0.0.1:5000/icon/tag.jpg'}
       else {new_card_info.img_url =  `http://127.0.0.1:5000/images/${new_card_info.guid}`}
       
       return new_card_info

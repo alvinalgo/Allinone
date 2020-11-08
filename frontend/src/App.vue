@@ -5,7 +5,9 @@
       <TheNavigator id="nav"/>
       <img src="@/assets/search_icon.jpg" width="40px" height="40px">
     </div>
-    <div id="router-view-wrapper"><router-view :key="$route.path"/></div>
+    <div id="router-view-wrapper">
+      <router-view :key="$route.path"/>
+    </div>
   </div>
 </template>
 
@@ -36,7 +38,7 @@ export default {
 .header {
   background: #48b599;
 //     linear-gradient(339deg, rgba(5,195,132,1) 0%, rgba(29,223,169,1) 100%);
-  position: sticky;
+  position: absolute;
   top: 0;
   z-index: 100;
   height: 70px;
@@ -46,11 +48,11 @@ export default {
   align-items: center;
   padding: 0px 50px;
 }
-    
+
 #router-view-wrapper {
   position: relative;
   margin: auto;
-  width: 80%;
+  top: 70px;
 }
     
 h1 {

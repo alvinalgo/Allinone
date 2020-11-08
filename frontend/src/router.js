@@ -5,34 +5,34 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/:start_index?",
+    path: "/:startIndex?",
     name: "Home",
     component: () =>
     import(/* webpackChunkName: "Home" */ "@/views/Home.vue")
   },
   {
-    path: "/folders/:folder_id/:start_index?",
+    path: "/folders/:folderId/:startIndex?",
     name: "Folders",
     props: true,
     component: () =>
       import(/* webpackChunkName: "folders" */ "@/views/Folders.vue")
   },
   {
-    path: "/full_list/:start_index?",
+    path: "/full_list/:startIndex?",
     name: "Full List",
     props: true,
     component: () =>
       import(/* webpackChunkName: "full_list" */ "@/views/Full_List.vue")
   },
   {
-    path: "/explorer/:target_index/:start_index?",
+    path: "/explorer/:targetIndex/:startIndex?",
     name: "Explorer",
     props: true,
     component: () =>
       import(/* webpackChunkName: "explorer" */ "@/views/Explorer.vue")
   },
   {
-    path: "/tags/:tag?",
+    path: "/tags/:tag?/:startIndex?",
     name: "Tags",
     props: true,
     component: () =>

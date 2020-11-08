@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="align">
-      <md-button class="md-dense md-raised" :to="{params: {start_index: valid_page(false)}}" replace>&lt;</md-button>
-      <md-button class="md-dense md-raised" :to="{params: {start_index: valid_page(true)}}" replace>&gt;</md-button>
-      {{ start_index }} - {{ start_index + 20 }}
+      <md-button class="md-dense md-raised" :to="{params: {startIndex: valid_page(false)}}" replace>&lt;</md-button>
+      <md-button class="md-dense md-raised" :to="{params: {startIndex: valid_page(true)}}" replace>&gt;</md-button>
+      {{ startIndex }} - {{ startIndex + this.$store.state.display.displayingSize }}
     </div>
     <Display :card_list="get_displaying_slice()" :click_card_head="click_card_head"/>
   </div>
@@ -20,22 +20,22 @@ export default {
   },
   mixins: [base],
   computed: {
-    start_index(){
-      var index = this.$route.params.start_index
+    startIndex(){
+      var index = this.$route.params.startIndex
       return index ? parseInt(index) : 0
     },
   },
   methods: {
     get_displaying_slice () {
-      return this.card_list.slice(this.start_index, this.start_index + 20)
+      return this.card_list.slice(this.startIndex, this.startIndex+this.$store.state.display.displayingSize)
     },
     valid_page (is_next_page) {
       if (is_next_page) {
-        return this.start_index+20 > this.card_list.length ?
-          this.start_index : this.start_index+20
+        return this.startIndex+this.$store.state.display.displayingSize > this.card_list.length ?
+          this.startIndex : this.startIndex+this.$store.state.display.displayingSize
       }
       else {
-        return Math.max(this.start_index-20, 0)
+        return Math.max(this.startIndex-this.$store.state.display.displayingSize, 0)
       }
     }
   }

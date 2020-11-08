@@ -19,11 +19,11 @@
     
     <ul>
       <li><router-link :to="{name:'Home'}">Home</router-link></li>
-      <li><router-link :to="{name:'Folders', params:{folder_id: '-1'}}">Folders</router-link></li>
-      <!-- <li><router-link :to="{name:'Full List', params:{'start_index': 0}}">Full List</router-link></li> -->
+      <li><router-link :to="{name:'Folders', params:{folderId: '-1'}}">Folders</router-link></li>
+      <li><router-link :to="{name:'Full List', params:{'startIndex': 0}}">Full List</router-link></li>
       <li><router-link :to="{name:'Tags', params:{tag:'-1'}}">Tags</router-link></li>
       <!-- <li><router-link :to="{name:'Folders', params:{folder_id:'1891'}}">iinumbers</router-link></li> -->
-      <li><router-link :to="{name:'Explorer', params: explorer_params}">Explorer</router-link></li>
+      <li><router-link :to="{name:'Explorer', params: explorerParams}">Explorer</router-link></li>
     </ul>
   </nav>
 </div>
@@ -33,9 +33,9 @@
 export default {
   name: 'TheNavigator',
   computed: {
-    explorer_params () {
-      var target_index = this.$store.state.folder_stack.length ? this.$store.state.folder_stack.slice(-1)[0]['id'] : '-1'
-      return {'start_index': 0, 'target_index': target_index}
+    explorerParams () {
+      var targetIndex = this.$store.state.folder_stack.length ? this.$store.state.folder_stack.slice(-1)[0]['id'] : '-1'
+      return {'startIndex': 0, 'targetIndex': targetIndex}
     }
   }
 }

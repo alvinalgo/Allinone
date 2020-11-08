@@ -4,7 +4,7 @@
       :class="get_class(i)"
       @mouseenter="focusing=i" @mouseleave="focusing=-1">
 
-      <Card :width="200" :height="250" :card_info="card_info" :focusing="i === focusing" :click_card_head="click_card_head"/>
+      <Card :width="200" :height="250" :card_info="card_info" :focusing="i === focusing" :click_card_head="click_card_head" />
     </div>
   </div>
 </template>

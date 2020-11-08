@@ -20,7 +20,7 @@ app.config['debug'] = True
 
 def get_default_size(size):
     if size == '-1':
-        size = '25'
+        size = '200'
     return int(size)
 
 # APIs ------------------------------------------------------
@@ -33,9 +33,11 @@ def home():
 def bookmarks(sorting, size):
     size = get_default_size(size)
     if sorting == 'recents':
-        result = df.sort_values('date_added', ascending=False).iloc[:size].to_dict('records')
+        # result = df.sort_values('date_added', ascending=False).iloc[:size].to_dict('records')
+        result = df.sort_values('date_added', ascending=False).to_dict('records')
     elif sorting == 'randoms':
-        result = random.sample(df.to_dict('records'), min(len(df), size))
+        # result = random.sample(df.to_dict('records'), min(len(df), size))
+        result = random.sample(df.to_dict('records'), len(df))
 
     return  jsonify(result)
 
@@ -75,10 +77,10 @@ def query_a_tag(cluster_method, target_tag):
     result = df_id.loc[target_list].reset_index().to_dict('records')
     return jsonify({'name': target_tag, 'children': result})
 
-@app.route('/tags')
+@app.route('/tags/<cluster_method>')
 @cross_origin()
-def tags():
-    result = df[df['type'] == 'folder'].to_dict('records')
+def tags(cluster_method):
+    result = tag_dfs[cluster_method].to_dict('records')
     return  jsonify(result)
 
 @app.route('/get_parents_and_self/<target_index>')
@@ -94,8 +96,10 @@ if __name__ == "__main__":
     df = pd.read_hdf('metadata.h5')
     df_id = df.set_index('id')
 
-    tag_series = {
-        'word_tokenized': pd.read_hdf('static/tag_series/word_tokenized.h5')
+    tag_dfs = {
+        'word_tokenized': pd.read_hdf('static/tag_dfs/word_tokenized.h5'),
+        'web_domain':  pd.read_hdf('static/tag_dfs/web_domain.h5')
     }
+    tag_series = {key: tag_dfs[key].set_index('name')['children'] for key in tag_dfs}
 
     app.run(debug=True)

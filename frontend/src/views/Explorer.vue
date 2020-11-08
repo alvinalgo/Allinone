@@ -1,9 +1,9 @@
 <template>
-  <div>
-    <div class="flex-wrapper">
+  <ViewTemplate>
+    <template #control-panel>
       <div>
         <a @click.prevent="redirect_to_root_and_reset_folder_stack">Home</a>
-        <span v-for="(stack, i) in this.$store.state.folder_stack" :key="stack.id">
+        <span v-for="(stack, i) in folder_stack" :key="stack.id">
           &gt;
           <a @click.prevent="redirect_page(i)">
             {{stack.name}}
@@ -11,19 +11,24 @@
         </span>
       </div>
       <PerformingOptions/>
-    </div>
-    <DisplaySystem :card_list="bookmarks" :click_card_head="click_card_head"/>
-  </div>
+    </template>
+    <template #result-display>
+      <DisplaySystem :card_list="bookmarks" :click_card_head="clickCardHead"/>
+    </template>
+  </ViewTemplate>
 </template>
 
 <script>
 import axios from "axios"
 import DisplaySystem from "@/components/display_system/index"
 import PerformingOptions from "@/components/display_system/performing_options"
+import ViewTemplate from "@/components/TheViewTemplate"
+
 
 export default {
   name: "folders",
   components: {
+    ViewTemplate,
     DisplaySystem,
     PerformingOptions
   },
@@ -32,20 +37,23 @@ export default {
       bookmarks: [],
     }
   },
+  computed: {
+    folder_stack () { return this.$store.state.folder_stack }
+  },
   methods: {
     redirect_page (index_in_stack) {
       this.$store.dispatch('update_folder_stack', index_in_stack)
-      var target_index = this.$store.state.folder_stack[index_in_stack]['id']
-      this.$router.push({name:'Explorer', params:{'target_index':target_index, 'start_index':0}}).catch(()=>{})
+      var targetIndex = this.$store.state.folder_stack[index_in_stack]['id']
+      this.$router.push({name:'Explorer', params:{'targetIndex':targetIndex, 'startIndex':0}}).catch(()=>{})
     },
     redirect_to_root_and_reset_folder_stack () {
       this.$store.dispatch('update_folder_stack', -1)
-      this.$router.push({name:'Explorer', params:{'target_index':'-1', 'start_index':0}}).catch(()=>{})
+      this.$router.push({name:'Explorer', params:{'targetIndex':'-1', 'startIndex':0}}).catch(()=>{})
     },
-    click_card_head (bookmarks) {
+    clickCardHead (bookmarks) {
       if(bookmarks['type'] == 'folder') {
         this.$store.dispatch('stack_the_folder', bookmarks)
-        this.$router.push({params:{target_index:bookmarks['id'], start_index:0}})
+        this.$router.push({params:{targetIndex:bookmarks['id'], startIndex:0}})
       }
       else {
         window.open(bookmarks['url'], "_blank")
@@ -53,21 +61,24 @@ export default {
     }
   },
   mounted () {
-    if (this.$route.params.target_index) {
-      axios.get('http://127.0.0.1:5000/query_a_folder/'+this.$route.params.target_index)
+    if (this.$route.params.targetIndex) {
+      console.log('mounted', this.$route.params)
+
+      axios.get('http://127.0.0.1:5000/query_a_folder/'+this.$route.params.targetIndex)
       .then(response => {
         this.bookmarks = response.data['children']
       })
 
-      if ((this.$store.state.folder_stack.length && this.$store.state.folder_stack.slice(-1)[0]['id'] !== this.$route.params.target_index) ||
-          (!this.$store.state.folder_stack.length && this.$route.params.target_index !== '-1')
-      ) {
-        this.$store.dispatch('refresh_folder_stack', this.$route.params.target_index)
+      if ((this.$store.state.folder_stack.length && this.$store.state.folder_stack.slice(-1)[0]['id'] !== this.$route.params.targetIndex) ||
+        (!this.$store.state.folder_stack.length && this.$route.params.targetIndex !== '-1')) {
+        console.log('refreshing folder_stack')
+        this.$store.dispatch('refresh_folder_stack', this.$route.params.targetIndex)
       }
-    }
-    else {
+
+    } else {
       axios.get('http://127.0.0.1:5000/query_a_folder/-1')
       .then(response => {
+        console.log('no targetIndex (targetIndex == -1)')
         this.bookmarks = response.data['children']
       })
     }
