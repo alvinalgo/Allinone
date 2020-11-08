@@ -1,5 +1,8 @@
 static/images
+static/tag_dfs
 backend/images/*
 frontend/node_modules
 frontend/dist
 metadata.h5
+*-checkpoint.ipynb
+node_modules/
