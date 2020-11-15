@@ -10,7 +10,7 @@
         </md-card-content>
       </a>
       <div class="flex" v-if="focusing">
-        <md-button class="md-dense md-primary" v-for="tag in card_info.keyword" :key="tag" :to="{name:'Tags', params:{'tag':tag}}">{{tag}}</md-button>
+        <md-button class="md-dense md-primary" v-for="tag in card_info.keyword" :key="tag" :to="{name:'Tags', params:{tag:tag, clusteringMethod:'word_tokenized'}}">{{tag}}</md-button>
       </div>
     </md-card>
   </div>

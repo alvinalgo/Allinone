@@ -14,20 +14,15 @@ export default new Vuex.Store({
     display: {
       display_style: 'grid_display',
       sorting: 'recents',
-      displayingSize: 30
+      displayingSize: 30,
+      clusterMethod: 'word_tokenized'
     },
-    folders: [],
-    sorted_all_bookmarks: [],
+    // folders: [],
+    // sorted_all_bookmarks: [],
     folder_stack: [],
+    displayingInfoId: false
   },
   mutations: {
-    update_folder(state, payload) {
-      state.folders = payload
-    },
-    update_full_list(state, payload) {
-      state.sorted_all_bookmarks = payload
-    },
-
     stack_the_folder(state, payload) {
       state.folder_stack.push(payload)
     },
@@ -43,27 +38,16 @@ export default new Vuex.Store({
     },
     update_sorting(state, payload) {
       state.display['sorting'] = payload
+    },
+    updateClusterMethod(state, payload) {
+      state.display['clusterMethod'] = payload
+    },
+
+    updateInfoId (state, payload) {
+      state.displayingInfoId = payload
     }
   },
   actions: {
-    check_folders({commit}) {
-      if (!this.state.loaded.folders) {
-        axios.get('http://127.0.0.1:5000/folders')
-          .then(response => {
-            commit('update_folder', response.data)
-        })
-        this.state.loaded.folders = true    // 待改，要用 mutation
-      }
-    },
-    check_full_list({commit}) {
-      if (!this.state.loaded.full_list) {
-        axios.get('http://127.0.0.1:5000/full_list')
-          .then(response => {
-            commit('update_full_list', response.data)
-        })
-        this.state.loaded.full_list = true    // 待改，要用 mutation
-      }
-    },
 
     stack_the_folder({commit}, payload) {
       commit('stack_the_folder', payload)
@@ -83,12 +67,19 @@ export default new Vuex.Store({
       }
     },
 
-    update_display({commit}, payload) {
+    update_display ({commit}, payload) {
       commit('update_display', payload)
     },
-    update_sorting({commit}, payload) {
+    update_sorting ({commit}, payload) {
       commit('update_sorting', payload)
     },
+    updateClusterMethod ({commit}, payload) {
+      commit('updateClusterMethod', payload)
+    },
+
+    updateInfoId ({commit}, payload) {
+      commit('updateInfoId', payload)
+    }
   },
   modules: {}
 })

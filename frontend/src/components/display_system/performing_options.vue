@@ -15,6 +15,13 @@
   <!-- no vue-meterial -->
   <div class="flex-wrapper">
     <div class="option_div">
+      <label for="clusterMethod">Tag</label> <br>
+      <select v-model="clusterMethod" name="clusterMethod" @change="updateClusterMethod">
+        <option value="word_tokenized">Keywords</option>
+        <option value="web_domain">Domain</option>
+      </select>
+    </div>
+    <div class="option_div">
       <label for="display">Display</label> <br>
       <select v-model="display_style" name="display" @change="update_display">
         <option value="grid_display">Grid</option>
@@ -42,7 +49,8 @@ export default {
   data () {
     return {
       display_style: this.$store.state.display['display_style'],
-      sorting: this.$store.state.display['sorting']
+      sorting: this.$store.state.display['sorting'],
+      clusterMethod: this.$store.state.display['clusterMethod'],
     }
   },
   methods: {
@@ -52,6 +60,9 @@ export default {
     update_sorting () {
       this.$store.dispatch('update_sorting', this.sorting)
     },
+    updateClusterMethod () {
+      this.$store.dispatch('updateClusterMethod', this.clusterMethod)
+    }
   }
 }
 </script>

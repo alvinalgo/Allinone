@@ -32,11 +32,11 @@ const routes = [
       import(/* webpackChunkName: "explorer" */ "@/views/Explorer.vue")
   },
   {
-    path: "/tags/:tag?/:startIndex?",
+    path: "/tags/:clusteringMethod/:tag?/:startIndex?",    //  /tags/:tag?/:startIndex?
     name: "Tags",
     props: true,
     component: () =>
-      import(/* webpackChunkName: "tag" */ "@/views/Tags.vue")
+      import(/* webpackChunkName: "tag" */ "@/views/Tags.vue"),
   },
 ]
 

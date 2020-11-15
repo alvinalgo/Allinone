@@ -21,7 +21,7 @@
       <li><router-link :to="{name:'Home'}">Home</router-link></li>
       <li><router-link :to="{name:'Folders', params:{folderId: '-1'}}">Folders</router-link></li>
       <li><router-link :to="{name:'Full List', params:{'startIndex': 0}}">Full List</router-link></li>
-      <li><router-link :to="{name:'Tags', params:{tag:'-1'}}">Tags</router-link></li>
+      <li><router-link :to="{name:'Tags', params:{tag:'-1', clusteringMethod:'word_tokenized'}}">Tags</router-link></li>
       <!-- <li><router-link :to="{name:'Folders', params:{folder_id:'1891'}}">iinumbers</router-link></li> -->
       <li><router-link :to="{name:'Explorer', params: explorerParams}">Explorer</router-link></li>
     </ul>

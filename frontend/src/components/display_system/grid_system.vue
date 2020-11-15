@@ -5,20 +5,20 @@
       <md-button class="md-dense md-raised" :to="{params: {startIndex: valid_page(true)}}" replace>&gt;</md-button>
       {{ startIndex }} - {{ startIndex + this.$store.state.display.displayingSize }}
     </div>
-    <Display :card_list="get_displaying_slice()" :click_card_head="click_card_head"/>
+    <Display :card_list="get_displaying_slice()" :CardComponent="CardComponent" />
   </div>
 </template>
 
 <script>
 import Display from "./displays/grid_display"
-import base from "./system_mixin"
+import passingCard from "@/mixins/passingCard.js"
 
 export default {
   name: "grid-system",
   components: {
     Display
   },
-  mixins: [base],
+  mixins: [passingCard],
   computed: {
     startIndex(){
       var index = this.$route.params.startIndex

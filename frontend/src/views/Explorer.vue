@@ -13,13 +13,14 @@
       <PerformingOptions/>
     </template>
     <template #result-display>
-      <DisplaySystem :card_list="bookmarks" :click_card_head="clickCardHead"/>
+      <DisplaySystem :card_list="bookmarks" :CardComponent="CardComponent" />
     </template>
   </ViewTemplate>
 </template>
 
 <script>
 import axios from "axios"
+import Card from "@/components/display_system/cards/explorerCard"
 import DisplaySystem from "@/components/display_system/index"
 import PerformingOptions from "@/components/display_system/performing_options"
 import ViewTemplate from "@/components/TheViewTemplate"
@@ -35,6 +36,7 @@ export default {
   data () {
     return {
       bookmarks: [],
+      CardComponent: Card,
     }
   },
   computed: {
@@ -49,15 +51,6 @@ export default {
     redirect_to_root_and_reset_folder_stack () {
       this.$store.dispatch('update_folder_stack', -1)
       this.$router.push({name:'Explorer', params:{'targetIndex':'-1', 'startIndex':0}}).catch(()=>{})
-    },
-    clickCardHead (bookmarks) {
-      if(bookmarks['type'] == 'folder') {
-        this.$store.dispatch('stack_the_folder', bookmarks)
-        this.$router.push({params:{targetIndex:bookmarks['id'], startIndex:0}})
-      }
-      else {
-        window.open(bookmarks['url'], "_blank")
-      }
     }
   },
   mounted () {

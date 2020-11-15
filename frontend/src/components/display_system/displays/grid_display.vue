@@ -4,21 +4,20 @@
       :class="get_class(i)"
       @mouseenter="focusing=i" @mouseleave="focusing=-1">
 
-      <Card :width="200" :height="250" :card_info="card_info" :focusing="i === focusing" :click_card_head="click_card_head" />
+      <component :is="CardComponent" :card_info="card_info" :focusing="i === focusing" />
     </div>
   </div>
 </template>
 
 <script>
-import Card from "../cards/event_card"
-import base from "./display_mixin.js"
+import passingCard from "@/mixins/passingCard.js"
 
 export default {
   name: "grid-display",
-  components: {
-    Card
-  },
-  mixins: [base],
+  mixins: [passingCard],
+  data: () => ({
+    focusing: -1
+  }),
   methods: {
     get_class (i) {
       return {

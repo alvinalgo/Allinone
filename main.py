@@ -90,6 +90,12 @@ def get_parents_and_self(target_index):
     result = df_id.loc[target_list].reset_index().to_dict('records')
     return jsonify(result)
 
+@app.route('/info/<target_index>')
+@cross_origin()
+def info(target_index):
+    result = df_id.loc[target_index].to_dict()
+    return  jsonify(result)
+
 # main -----------------------------------------------------
 if __name__ == "__main__":
     

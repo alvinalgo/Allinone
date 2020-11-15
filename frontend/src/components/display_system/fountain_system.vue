@@ -1,19 +1,19 @@
 <template>
   <div v-infinite-scroll="loadMore" infinite-scroll-disabled="cannotScroll" infinite-scroll-distance="100">
-    <Display :card_list="getDisplayingSlice" :click_card_head="click_card_head"/>
+    <Display :card_list="getDisplayingSlice" :CardComponent="CardComponent" />
   </div>
 </template>
 
 <script>
 import Display from "./displays/grid_display"
-import base from "./system_mixin"
+import passingCard from "@/mixins/passingCard.js"
 
 export default {
   name: "fountain-system",
   components: {
     Display
   },
-  mixins: [base],
+  mixins: [passingCard],
   data () {
     return {
       displayingEnd: this.$store.state.display.displayingSize

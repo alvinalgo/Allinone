@@ -1,8 +1,9 @@
 # Allinone
 
+- On right click  
+    ![](readme_materials/right_click.gif)
+
 ## main
-主體
-home.html & page2.html 是template
 
 
 

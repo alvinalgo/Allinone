@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex-wrapper sticky">
-      <slot class="flex-wrapper sticky" name="control-panel">
+      <slot name="control-panel">
         <PerformingOptions />
       </slot>
     </div>
@@ -34,8 +34,8 @@ export default {
   position: sticky;
   background-color: antiquewhite;
   top: 0;
+  z-index: 3;
   padding: 0 10%;
-  z-index: 10;
 }
 
 .percent80 {

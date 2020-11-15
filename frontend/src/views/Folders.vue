@@ -5,7 +5,7 @@
       <PerformingOptions />
     </template>
     <template #result-display>
-      <DisplaySystem :card_list="card_list" :click_card_head="clickCardHead"/>
+      <DisplaySystem :card_list="card_list" :CardComponent="CardComponent" />
     </template>
   </ViewTemplate>
 </template>
@@ -14,7 +14,7 @@
 import axios from "axios"
 import DisplaySystem from "@/components/display_system/index"
 import PerformingOptions from "@/components/display_system/performing_options"
-import non_explorer_base from "@/views/common_non_explorer_bookmarks_mixin"
+import Card from "@/components/display_system/cards/nonExplorerCard"
 import ViewTemplate from "@/components/TheViewTemplate"
 
 
@@ -25,11 +25,11 @@ export default {
     DisplaySystem,
     PerformingOptions
   },
-  mixins: [non_explorer_base],
   data () {
     return {
       card_list: [],
-      folder_name: ''
+      folder_name: '',
+      CardComponent: Card,
     }
   },
   mounted() {

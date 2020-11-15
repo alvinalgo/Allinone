@@ -1,11 +1,11 @@
 <template>
-  <component :is="displays[this.$store.state.display['display_style']]" :card_list="card_list" :click_card_head="click_card_head"/>
+  <component :is="displays[this.$store.state.display['display_style']]" :card_list="card_list" :CardComponent="CardComponent" />
 </template>
 
 <script>
 import grid_system from "@/components/display_system/grid_system"
 import fountain_system from "@/components/display_system/fountain_system"
-import base from "./system_mixin"
+import passingCard from "@/mixins/passingCard.js"
 
 export default {
   name: "display-system",
@@ -13,7 +13,7 @@ export default {
     grid_system,
     fountain_system
   },
-  mixins: [base],
+  mixins: [passingCard],
   data() {
     return {
       displays: {
